@@ -7,6 +7,9 @@
 //
 
 #import "SSPullToRefreshDefaultContentView.h"
+#import "BCConstants.h"
+#import "BCTimeAndDateMaker.h"
+
 
 @implementation SSPullToRefreshDefaultContentView
 
@@ -71,14 +74,11 @@
 
 
 - (void)setLastUpdatedAt:(NSDate *)date withPullToRefreshView:(SSPullToRefreshView *)view {
-	static NSDateFormatter *dateFormatter = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		dateFormatter = [[NSDateFormatter alloc] init];
-		dateFormatter.dateStyle = NSDateFormatterLongStyle;
-		
-	});
-	_lastUpdatedAtLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [dateFormatter stringFromDate:date]];
+    
+    BCTimeAndDateMaker *timeAndDate = [BCTimeAndDateMaker new];
+    NSString *lastRefreshTime = [timeAndDate stringFromDate:date withFormat:DATE_WITH_TIME_READABLE];
+    
+    self.lastUpdatedAtLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Last updated: %@", nil), lastRefreshTime];
 }
 
 @end
